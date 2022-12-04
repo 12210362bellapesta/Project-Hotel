@@ -13,7 +13,7 @@ class PemesananSeeder extends Seeder
             'kamar_id' => '1',
             'tgl_mulai' => '2022-09-04',
             'tgl_selesai' => '2022-09-07',
-            'pemesananstatus_id' => '0',
+            'pemesananstatus_id' => '1',
             'tamu_id' => '1',
         ]);
         echo "hasil id = $id";
