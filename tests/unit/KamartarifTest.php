@@ -11,6 +11,8 @@ class KamartarifTest extends CIUnitTestCase{
 
     public function testCreateShowUpdateDelete(){
         $json = $this->call('post', 'kamartarif', [
+            'kamartipe_id' => '1',
+            'tipetarif_id' => '1',
             'tarif' => 'Testing',
             'tgl_mulai' => '12-09-2022',
             'tgl_selesai' => '12-10-2022'
@@ -23,6 +25,8 @@ class KamartarifTest extends CIUnitTestCase{
                 ->assertStatus(200);
 
         $this->call('patch', 'kamartarif', [
+            'kamartipe_id' => '1',
+            'tipetarif_id' => '1',
             'tarif' => 'Testing',
             'tgl_mulai' => '12-09-2022',
             'tgl_selesai' => '12-10-2022',
@@ -32,11 +36,6 @@ class KamartarifTest extends CIUnitTestCase{
         $this->call('delete', 'kamartarif', [
             'id' => $js['id']
         ])->assertStatus(200);
-    }
-
-    public function testRead(){
-        $this->call('get', 'kamartarif/all')
-                ->assertStatus(200);
     }
 
 }
