@@ -11,20 +11,24 @@ class KamarTest extends CIUnitTestCase{
 
     public function testCreateShowUpdateDelete(){
         $json = $this->call('post', 'kamar', [
+            'kamartipe_id' => '1',
+            'kamarstatus_id' => '1',
             'tipe' => 'Deluxe',
             'lantai' => '1',
             'nomor' => '1',
             'status' => 'siap huni',
             'deskripsi' => 'testing'
-        ])->getJSON();
-        $js = json_decode($json, true);
-
-        $this->assertTrue($js['id'] > 0);
-
-        $this->call('get', "kamar/".$js['id'])
-                ->assertStatus(200);
-
-        $this->call('patch', 'kamar', [
+            ])->getJSON();
+            $js = json_decode($json, true);
+            
+            $this->assertTrue($js['id'] > 0);
+            
+            $this->call('get', "kamar/".$js['id'])
+            ->assertStatus(200);
+            
+            $this->call('patch', 'kamar', [
+            'kamartipe_id' => '1',
+            'kamarstatus_id' => '1',
             'tipe' => 'Deluxe',
             'lantai' => '1',
             'nomor' => '1',

@@ -28,6 +28,7 @@
             <th>No Telepon</th>
             <th>No Handphone</th>
             <th>Level</th>
+            <th>Foto</th>
             <th>Aksi</th>
         </tr>
     </thead>
@@ -90,7 +91,7 @@
                             <option value="B">Room Boy</option>
                         </select>
                     </div>
-                    <div class="mb-3" id="fileberkas"></div>
+                    <div class="mb-3" id="foto"></div>
                     <div class="mb-3">
                         <label class="form-label">Alamat Email</label>
                         <input type="email" name="email" class="form-control"/>
@@ -119,10 +120,11 @@
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/css/dropify.min.css" integrity="sha512-EZSUkJWTjzDlspOoPSpUFR0o0Xy7jdzW//6qhUkoZ9c4StFkVsp9fbbd0O06p9ELS3H486m4wmrCELjza4JEog==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <script>
-    function buatDropify(filename = ''){
-        $('div#fileberkas').html(`
-            <input type="file" name="berkas" data-default-file="${filename}" />
-        `);
+    function buatDropify(filename=''){
+        $('div#foto').html(`<input type="file"
+                                   name="berkas"
+                                   data-allowed-file-extensions="png jpg bmp gif"
+                                   data-default-file="${filename}">`);
         $('input[name=berkas]').dropify();
     }
 
@@ -134,8 +136,6 @@
         $('table#table-pengguna').on('click', '.btn-edit', function(){
             let id = $(this).data('id');
             let baseurl = "<?=base_url()?>";
-            $('#modalForm').modal('show');
-            $('input[name=_method]').val('patch');
             
             $.get(`${baseurl}/pengguna/${id}`).done((e)=>{
                 $('input[name=id]').val(e.id);
@@ -149,8 +149,9 @@
                 $('input[name=notelp]').val(e.notelp);
                 $('input[name=nohp]').val(e.nohp);
                 $('select[name=level]').val(e.level);
-                
-                buatDropify(a.berkas);
+                buatDropify(e?.filename ?? '');
+                $('#modalForm').modal('show');
+                $('input[name=_method]').val('patch');
             });
         });
 
@@ -239,7 +240,9 @@
                     }
                 
                  },
-               
+                { data: 'foto', render:(data,type,meta,row)=>{
+                    return `<img src="${data}" height="60px">`;
+                }},
 
                 { data: 'id',
                 render: (data, type, meta, row)=>{

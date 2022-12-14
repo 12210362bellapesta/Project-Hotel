@@ -91,16 +91,16 @@
         $('table#table-kamartipe').on('click', '.btn-edit', function(){
             let id = $(this).data('id');
             let baseurl = "<?=base_url()?>";
-            $('#modalForm').modal('show');
-            $('input[name=_method]').val('patch');
-
+            
             $.get(`${baseurl}/kamartipe/${id}`).done((e)=>{
                 $('input[name=id]').val(e.id);
                 $('input[name=tipe]').val(e.tipe);
                 $('select[name=keterangan]').val(e.keterangan);
                 $('input[name=urutan]').val(e.urutan);
                 $('input[name=aktif]').val(e.aktif)
-
+                $('#modalForm').modal('show');
+                $('input[name=_method]').val('patch');
+                
                 buatDropify(a.berkas);
             });
         });

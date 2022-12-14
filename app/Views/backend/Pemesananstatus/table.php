@@ -76,7 +76,7 @@
         $('table#table-pemesananstatus').on('click', '.btn-edit', function(){
             let id = $(this).data('id');
             let baseurl = "<?=base_url()?>";
-            $.get(`${baseurl}/tipetarif/${id}`).done((e)=>{
+            $.get(`${baseurl}/pemesananstatus/${id}`).done((e)=>{
                 $('input[name=id]').val(e.id);
                 $('input[name=status]').val(e.status);
                 $('input[name=urutan]').val(e.urutan);

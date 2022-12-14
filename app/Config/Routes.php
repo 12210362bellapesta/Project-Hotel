@@ -51,9 +51,10 @@ $routes->group('pengguna', ['filter'=>'login'], function(RouteCollection $routes
     $routes->get('/', 'PenggunaController::index');
     $routes->post('/', 'PenggunaController::store');
     $routes->patch('/', 'PenggunaController::update');
-    $routes->get('(:num)/berkas.png', 'PenggunaController::berkas/$1');
+    $routes->get('(:num)/berkas.jpg', 'PenggunaController::berkas/$1');
     $routes->delete('/', 'PenggunaController::delete');
     $routes->get('(:num)', 'PenggunaController::show/$1');
+    $routes->get('(:num)/foto.jpg', 'PenggunaController::foto/$1');
     $routes->get('all', 'PenggunaController::all');
 });
 

@@ -32,9 +32,5 @@ class PembayaranTest extends CIUnitTestCase{
         ])->assertStatus(200);
     }
 
-    public function testRead(){
-        $this->call('get', 'pembayaran/all')
-                ->assertStatus(200);
-    }
 
 }

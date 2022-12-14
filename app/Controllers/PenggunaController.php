@@ -90,7 +90,7 @@ class PenggunaController extends BaseController
 
     public function all(){
         $pm = new PenggunaModel();
-        $pm->select('id, nama_depan, nama_belakang, gender, email, alamat, kota, tgl_lhr, notelp, nohp, level');
+        $pm->select('id, nama_depan, nama_belakang, gender, email, alamat, kota, tgl_lhr, notelp, nohp, level, concat("'.base_url('pengguna/').'", "/", id, "/foto.jpg") as foto');
 
         return (new Datatable( $pm))
                 ->setFieldFilter(['nama_depan', 'nama_belakang', 'email', 'gender', 'alamat', 'kota', 'tgl_lhr', 'notelp', 'nohp', 'level'])
@@ -148,7 +148,7 @@ class PenggunaController extends BaseController
             'notelp'      => $this->request->getVar('notelp'),
             'nohp'      => $this->request->getVar('nohp'),
             'level'      => $this->request->getVar('level'),
-            
+            'foto'          => $this->request->getVar('foto'),
         ]);
         if($hasil == true){
             $this->simpanFile($id);
@@ -167,30 +167,35 @@ class PenggunaController extends BaseController
     private function simpanFile($id){
         $file = $this->request->getFile('berkas');
 
-        if( $file->hasMoved() == false ){
-            $direktori = WRITEPATH . 'uploads/pengguna';
-            if(file_exists($direktori) == false){
-                @mkdir($direktori);
+        if($file->hasMoved() == false){
+            $patch = WRITEPATH . 'uploads/pengguna/';
+ 
+            if(!file_exists($patch)){
+                @mkdir($patch, recursive: true);
             }
 
-            $file->store('pengguna', $id . '.jpg');
+            $patch = $file->store(
+                            folderName: 'pengguna',
+                            fileName: "$id.jpg"
+                        );
+            (new PenggunaModel())->update($id, [
+                'foto'=>$patch
+            ]);
+            return $patch;
         }
-
-
+        return null;
     }
 
-    public function berkas($id){
-        $pm = new PenggunaModel();
-        $dt = $pm->find($id);
-        if($dt == null)throw PageNotFoundException::forPageNotFound();
+    public function foto($id){
+        $file = WRITEPATH . 'uploads/pengguna/'.$id.'.jpg';
 
-        $path = WRITEPATH . 'uploads/pengguna/' . $id . '.jpg';
-        if(file_exists($path) == false){
+        if(!file_exists($file)){
             throw PageNotFoundException::forPageNotFound();
         }
 
-        echo file_get_contents($path);
-        return $this->response->setHeader('Content-type', 'image/jpeg')
+        echo file_get_contents($file);
+        return $this->response
+                    ->setHeader('Content-type','image/jpeg')
                     ->sendBody();
     }
 }
